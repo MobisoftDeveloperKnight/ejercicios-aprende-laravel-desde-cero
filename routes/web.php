@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 
@@ -20,12 +21,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Ejercicio 1
 
-Route::get('/ejercicio1', function () {
-    return "GET OK";
-});
 
-Route::post('/ejercicio1', function () {
-    return "POST OK";
-});
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
