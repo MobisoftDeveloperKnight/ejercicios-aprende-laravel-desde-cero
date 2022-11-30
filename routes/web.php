@@ -27,3 +27,11 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/contact', function () {
+    return Response::view('contact');
+});
+
+Route::post('/contact', function(Request $request){
+    dd($request->get('phone_number'));
+});
