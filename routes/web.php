@@ -82,7 +82,7 @@ Route::get('/change-password', function () {
 
 Route::post('/change-password', function (Request $request) {
     if(auth()->check()){
-        return response("Pasword Changed to",$request->get('password'));
+        return response("Pasword Changed to {$request->get('password')}");
     }else {
         return response("Not Authenticated",401);
     }
