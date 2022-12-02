@@ -21,7 +21,7 @@ class Ejercicio2Test extends TestCase
         $response->assertStatus(200);
         $response->assertExactJson($product);
     }
-
+    
     /**
      * @depends test_ejercicio_2_apartado_a_devuelve_lo_que_recibe
      */
