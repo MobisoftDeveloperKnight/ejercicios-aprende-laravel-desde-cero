@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Response;
@@ -58,7 +59,8 @@ Route::post('ejercicio2/b' ,function() {
     };
     
 });
-Route::post('/ejercicio2/c', function (FacadesRequest $request) {
+Route::post('/ejercicio2/c', function (Request $request) {
+    
             $discount = $request->query('discount');
     $price = $request->get('price');
     if (in_array($discount, ["SAVE5", "SAVE10", "SAVE15"])) {
@@ -73,4 +75,15 @@ Route::post('/ejercicio2/c', function (FacadesRequest $request) {
         'price' => $price,
         'discount' => $discountValue
     ]);
+});
+Route::get('/change-password', function () {
+    return Response::view('change-password');
+});
+
+Route::post('/change-password', function (Request $request) {
+    if(auth()->check()){
+        return response("Pasword Changed to",$request->get('password'));
+    }else {
+        return response("Not Authenticated",401);
+    }
 });
