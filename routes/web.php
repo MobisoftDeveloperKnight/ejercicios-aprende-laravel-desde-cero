@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
+use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Auth;
@@ -31,53 +33,7 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/contact', function () {
-    return Response::view('contact');
-});
 
-Route::post('/contact', function(Request $request){
-    //dd($request->get('phone_number'));
-    $data = $request->all();
-    DB::statement("INSERT INTO contacts (name, phone_number) VALUES (?,?)", [$data["name"], $data["phone_number"]]);
-    return "Contact stored";
+Route::get('/contacts/create', [ContactController::class, 'create'])->name('contacts.create');
+Route::post('/contacts/create', [ContactController::class, 'store'])->name('contacts.store');
 
-});
-
-Route::post('ejercicio2/a',function() {
-    $product = [
-        'name' => 'Keyboard',
-        'description' => 'Mechanical RGB keyboard',
-        'price' => 200
-    ];
-    return response()->json($product)->setStatusCode(200);
- });
-
-Route::post('ejercicio2/b' ,function() {
-    $product = [
-        'name' => 'Keyboard',
-        'description' => 'Mechanical RGB keyboard',
-        'price' => -100
-    ];
-    
-    if($product['price']<0){
-        return response()->json(['message' => "Price can't be less than 0"])->setStatusCode(422);
-    };
-    
-});
-Route::post('/ejercicio2/c', function (Request $request) {
-    
-            $discount = $request->query('discount');
-    $price = $request->get('price');
-    if (in_array($discount, ["SAVE5", "SAVE10", "SAVE15"])) {
-        $discountValue = intval(substr($discount, 4));
-        $price -= $request->get('price') * ($discountValue / 100);
-    } else {
-        $discountValue = 0;
-    }
-    return Response::json([
-        'name' => $request->get('name'),
-        'description' => $request->get('description'),
-        'price' => $price,
-        'discount' => $discountValue
-    ]);
-});
