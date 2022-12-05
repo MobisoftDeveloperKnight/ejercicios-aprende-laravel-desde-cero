@@ -4,6 +4,7 @@ use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
@@ -35,7 +36,11 @@ Route::get('/contact', function () {
 });
 
 Route::post('/contact', function(Request $request){
-    dd($request->get('phone_number'));
+    //dd($request->get('phone_number'));
+    $data = $request->all();
+    DB::statement("INSERT INTO contacts (name, phone_number) VALUES (?,?)", [$data["name"], $data["phone_number"]]);
+    return "Contact stored";
+
 });
 
 Route::post('ejercicio2/a',function() {
@@ -75,15 +80,4 @@ Route::post('/ejercicio2/c', function (Request $request) {
         'price' => $price,
         'discount' => $discountValue
     ]);
-});
-Route::get('/change-password', function () {
-    return Response::view('change-password');
-});
-
-Route::post('/change-password', function (Request $request) {
-    if(auth()->check()){
-        return response("Pasword Changed to {$request->get('password')}");
-    }else {
-        return response("Not Authenticated",401);
-    }
 });
