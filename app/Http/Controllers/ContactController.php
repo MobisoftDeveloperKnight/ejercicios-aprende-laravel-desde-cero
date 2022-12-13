@@ -4,14 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreContactRequest;
 use App\Models\Contact;
-
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Gate;
 
 class ContactController extends Controller
 {
-   
     /**
      * Display a listing of the resource.
      *
@@ -20,6 +16,7 @@ class ContactController extends Controller
     public function index()
     {
         $contacts = auth()->user()->contacts;
+
         return view('contacts.index', compact('contacts'));
     }
 
@@ -41,8 +38,12 @@ class ContactController extends Controller
      */
     public function store(StoreContactRequest $request)
     {
-        auth()->user()->contacts()->create($request->validated());
-        return redirect()->route('home');
+        $contact = auth()->user()->contacts()->create($request->validated());
+
+        return redirect('home')->with('alert', [
+            'message' => "Contact $contact->name successfully saved",
+            'type' => 'success',
+        ]);
     }
 
     /**
@@ -54,7 +55,8 @@ class ContactController extends Controller
     public function show(Contact $contact)
     {
         $this->authorize('view', $contact);
-        return view('contacts.show',compact('contact'));
+
+        return view('contacts.show', compact('contact'));
     }
 
     /**
@@ -66,7 +68,8 @@ class ContactController extends Controller
     public function edit(Contact $contact)
     {
         $this->authorize('update', $contact);
-        return view ('contacts.edit', compact('contact'));
+
+        return view('contacts.edit', compact('contact'));
     }
 
     /**
@@ -78,9 +81,14 @@ class ContactController extends Controller
      */
     public function update(StoreContactRequest $request, Contact $contact)
     {
-        $this->authorize('update', $contact);   
+        $this->authorize('update', $contact);
+
         $contact->update($request->validated());
-        return redirect()->route('home');
+
+        return redirect('home')->with('alert', [
+            'message' => "Contact $contact->name successfully updated",
+            'type' => 'success',
+        ]);
     }
 
     /**
@@ -95,6 +103,9 @@ class ContactController extends Controller
 
         $contact->delete();
 
-        return redirect()->route('home');   
+        return back()->with('alert', [
+            'message' => "Contact $contact->name successfully deleted",
+            'type' => 'success',
+        ]);
     }
 }
