@@ -61,7 +61,7 @@
                 </li>
               @endif
             @else
-            <li class="nav-item">
+              <li class="nav-item">
                 <a class="nav-link" href="{{ route('contacts.index') }}">My
                   Contacts</a>
               </li>
