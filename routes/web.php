@@ -22,7 +22,19 @@ Route::get('/', fn() => auth()->check() ? redirect('/home') : view('welcome'));
 
 Auth::routes();
 
+Route::get('/checkout', function (Request $request) {
+    return $request->user()
+        ->newSubscription('default', config('stripe.price_id'))
+        ->checkout();
+});
+
+Route::get('/billing-portal', function (Request $request) {
+    return $request->user()->redirectToBillingPortal();
+});
+
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::resource('contacts', ContactController::class);
+
 Route::resource('products', ProductController::class);
+
