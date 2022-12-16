@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\View\Components\Alert;
+
 class StripeController extends Controller
 {
     public function checkout() {
@@ -11,7 +13,10 @@ class StripeController extends Controller
     }
 
     public function billingPortal() {
-        return auth()->user()->redirectToBillingPortal();
+        
+        $billing = auth()->user()->redirectToBillingPortal();
+        error_log($billing);
+        return $billing;
     }
 
     public function freeTrialEnd() {
