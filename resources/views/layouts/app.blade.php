@@ -62,17 +62,21 @@
               @endif
             @else
               <li class="nav-item">
-                <a class="nav-link"
-                  href="{{ route('contacts.index') }}">My Contacts</a>
+                <a class="nav-link" href="{{ route('contact-shares.create') }}">Share
+                  Contacts</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link"
-                  href="{{ route('contacts.create') }}">Create New Contact</a>
+                <a class="nav-link" href="{{ route('contacts.index') }}">My
+                  Contacts</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('contacts.create') }}">Create
+                  New Contact</a>
               </li>
               <li class="nav-item dropdown">
-                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#"
-                  role="button" data-bs-toggle="dropdown" aria-haspopup="true"
-                  aria-expanded="false" v-pre>
+                <a id="navbarDropdown" class="nav-link dropdown-toggle"
+                  href="#" role="button" data-bs-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false" v-pre>
                   {{ Auth::user()->name }}
                 </a>
 
@@ -97,13 +101,17 @@
 
     <main class="py-4">
       @if ($alert = session()->get('alert'))
-        <x-alert :type="$alert['type']" :message="$alert['message']"/>
+        <x-alert :type="$alert['type']" :message="$alert['message']" />
       @endif
-      @if (!auth()->user()?->subscribed() && auth()->user()?->onTrial())
-          @php
-            $freeTrialRemainingDays = now()->diffInDays(auth()->user()->trial_ends_at)
-          @endphp
-          <x-alert type="info" message="Trial ends in {{ $freeTrialRemainingDays }} days. Upgrade <a href='{{ route('checkout') }}'>here</a>" />
+      @if (!auth()->user()
+          ?->subscribed() &&
+          auth()->user()
+              ?->onTrial())
+        @php
+          $freeTrialRemainingDays = now()->diffInDays(auth()->user()->trial_ends_at);
+        @endphp
+        <x-alert type="info"
+          message="Trial ends in {{ $freeTrialRemainingDays }} days. Upgrade <a href='{{ route('checkout') }}'>here</a>" />
       @endif
 
       @yield('content')
