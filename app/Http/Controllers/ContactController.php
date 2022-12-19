@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreContactRequest;
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class ContactController extends Controller
@@ -47,6 +48,8 @@ class ContactController extends Controller
         }
 
         $contact = auth()->user()->contacts()->create($data);
+
+        Cache::forget(auth()->id());
 
         return redirect('home')->with('alert', [
             'message' => "Contact $contact->name successfully saved",
