@@ -4,6 +4,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContactShareController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StripeController;
+use App\Http\Controllers\TokenController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -31,4 +32,9 @@ Route::middleware(['auth', 'subscription'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::resource('contacts', ContactController::class);
     Route::resource('contact-shares', ContactShareController::class)->except(['show', 'edit', 'update']);
+    Route::resource('tokens',TokenController::class)->only(['create','store']);
 });
+
+
+Route::resource('products', ProductController::class);
+
