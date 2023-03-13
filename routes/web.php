@@ -35,6 +35,14 @@ Route::middleware(['auth', 'subscription'])->group(function () {
     Route::resource('tokens',TokenController::class)->only(['create','store']);
 });
 
+Route::post('ejercicio2/a',function() {
+    $product = [
+        'name' => 'Keyboard',
+        'description' => 'Mechanical RGB keyboard',
+        'price' => 200
+    ];
+    return response()->json($product)->setStatusCode(200);
+ });
 
 Route::resource('products', ProductController::class);
 
